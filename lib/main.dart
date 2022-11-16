@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_demo/res/lang/index.dart'; // 国际化
+import 'package:flutter_demo/res/lang/lang.dart'; // 国际化
 import 'package:flutter_demo/router/app_pages.dart';
 
 void main() {
