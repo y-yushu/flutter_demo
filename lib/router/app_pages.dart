@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:flutter_demo/pages/home/home_binding.dart';
 import 'package:flutter_demo/pages/home/home_view.dart';
-// import 'package:flutter_demo/pages/test/test_view.dart';
+import 'package:flutter_demo/pages/test/test_binding.dart';
+import 'package:flutter_demo/pages/test/test_view.dart';
 
 part 'app_routes.dart';
 
@@ -11,6 +12,11 @@ class AppPages {
       name: AppRoutes.HOME,
       page: () => const HomePage(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.TEST,
+      page: () => TestPage(),
+      binding: TestBinding(),
     ),
   ];
 }

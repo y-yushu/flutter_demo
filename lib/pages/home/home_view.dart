@@ -1,7 +1,11 @@
+import 'package:flutter_demo/pages/home/home_logic.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-// import 'package:flutter_demo/res/font/font.dart';
+import 'package:flutter_demo/res/font/font.dart';
 import 'package:flutter_demo/rewrite/FloatingButtonCustomLocation.dart';
+
+final logic = Get.find<HomeLogic>();
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -43,63 +47,67 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("GetX Navigation"),
-      // ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('点击111');
-        },
-        // child: Icon(
-        //   MyIcons.add,
-        // ),
-      ),
-      floatingActionButtonLocation: _fabl,
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      body: SingleChildScrollView(
-        controller: _controller,
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              height: 220,
-              decoration: const BoxDecoration(
-                color: Colors.blueGrey,
-              ),
-              child: const Text('123'),
+    return WillPopScope(
+      onWillPop: logic.onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("GetX Navigation"),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: logic.clickFloatingActionButton,
+          child: Icon(
+            MyIcons.add,
+          ),
+        ),
+        floatingActionButtonLocation: _fabl,
+        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            controller: _controller,
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  height: 110,
+                  decoration: const BoxDecoration(
+                    color: Colors.blueGrey,
+                  ),
+                  child: const Text('456'),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  height: 550,
+                  decoration: const BoxDecoration(
+                    color: Colors.redAccent,
+                  ),
+                  child: const Text('789'),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  height: 220,
+                  decoration: const BoxDecoration(
+                    color: Colors.yellowAccent,
+                  ),
+                  child: const Text('123'),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  height: 220,
+                  decoration: const BoxDecoration(
+                    color: Colors.deepOrange,
+                  ),
+                  child: const Text('123'),
+                ),
+              ],
             ),
-            Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              height: 220,
-              decoration: const BoxDecoration(
-                color: Colors.redAccent,
-              ),
-              child: const Text('123'),
-            ),
-            Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              height: 220,
-              decoration: const BoxDecoration(
-                color: Colors.yellowAccent,
-              ),
-              child: const Text('123'),
-            ),
-            Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              height: 220,
-              decoration: const BoxDecoration(
-                color: Colors.deepOrange,
-              ),
-              child: const Text('123'),
-            ),
-          ],
+          ),
         ),
       ),
     );
+    // return ;
   }
 }
