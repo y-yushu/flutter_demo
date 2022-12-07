@@ -15,7 +15,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.TEST,
-      page: () => TestPage(),
+      page: () => const TestPage(),
       binding: TestBinding(),
     ),
   ];
