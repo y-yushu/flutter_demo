@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
       onWillPop: logic.onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("GetX Navigation"),
+          title: const Text("Flutter UI"),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: logic.clickFloatingActionButton,
@@ -62,52 +62,51 @@ class _HomePageState extends State<HomePage> {
         floatingActionButtonLocation: _fabl,
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         body: SafeArea(
-          child: SingleChildScrollView(
-            controller: _controller,
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  height: 110,
-                  decoration: const BoxDecoration(
-                    color: Colors.blueGrey,
-                  ),
-                  child: const Text('456'),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  height: 550,
-                  decoration: const BoxDecoration(
-                    color: Colors.redAccent,
-                  ),
-                  child: const Text('789'),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  height: 220,
-                  decoration: const BoxDecoration(
-                    color: Colors.yellowAccent,
-                  ),
-                  child: const Text('123'),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  height: 220,
-                  decoration: const BoxDecoration(
-                    color: Colors.deepOrange,
-                  ),
-                  child: const Text('123'),
-                ),
-              ],
-            ),
+          child: GridView.count(
+            crossAxisCount: 2,
+            children: _GridChildren(),
           ),
+          // child: GridView.builder(
+          //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          //     crossAxisCount: 3,
+          //     mainAxisSpacing: 0.0,
+          //     crossAxisSpacing: 0.0,
+          //     childAspectRatio: 1.0,
+          //   ),
+          //   itemCount: 10,
+          //   itemBuilder: (item, index) {
+          //     return Container(
+          //       child: const Text('data'),
+          //     );
+          //   },
+          // ),
         ),
       ),
     );
-    // return ;
+  }
+
+  // 宫格
+  List<Widget> _GridChildren() {
+    return [
+      Container(
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.blue,
+        ),
+        child: Text('111'),
+      ),
+      Container(
+        height: 40,
+        decoration: BoxDecoration(
+          color: Colors.blue,
+        ),
+        child: Text('222'),
+      ),
+      Text('123'),
+      Text('123'),
+      Text('123'),
+      Text('123'),
+      Text('123'),
+    ];
   }
 }
