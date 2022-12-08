@@ -1,10 +1,10 @@
-import 'package:flutter_demo/pages/home/home_logic.dart';
 import 'package:flutter_demo/res/theme/app_theme.dart';
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/model/homelist.dart';
 
-final logic = Get.find<HomeLogic>();
-
+/// 首页
+///
+/// 2022/12/8 yyshu
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -14,7 +14,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   AnimationController? animationController;
-  bool multiple = true;
+  bool multiple = true; // 首页布局状态 宫格或列表
+  List<HomeList> homeList = HomeList.homelist; // 所有页面
 
   @override
   void initState() {
@@ -58,6 +59,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  // AppBar
                   appBar(isLightMode),
                   body(),
                 ],
@@ -118,12 +120,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   borderRadius:
                       BorderRadius.circular(AppBar().preferredSize.height),
                   onTap: () {
-                    setState(() {
-                      multiple = !multiple;
-                    });
+                    setState(() => multiple = !multiple);
                   },
                   child: Icon(
-                    multiple ? Icons.dashboard : Icons.view_agenda,
+                    multiple ? Icons.view_agenda : Icons.dashboard,
                     color: isLightMode ? AppTheme.darkGrey : AppTheme.white,
                   ),
                 ),
@@ -141,9 +141,113 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       child: FutureBuilder<bool>(
         future: getData(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          return SizedBox();
+          if (!snapshot.hasData) {
+            return const SizedBox();
+          } else {
+            return GridView(
+              padding: const EdgeInsets.only(
+                top: 0,
+                left: 12,
+                right: 12,
+              ),
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: multiple ? 2 : 1,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 1.5,
+              ),
+              children: List<Widget>.generate(
+                homeList.length,
+                (int index) {
+                  final int count = homeList.length;
+                  final Animation<double> animation = Tween<double>(
+                    begin: 0.0,
+                    end: 1.0,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animationController!,
+                      curve: Interval(
+                        (1 / count) * index,
+                        1,
+                        curve: Curves.fastOutSlowIn,
+                      ),
+                    ),
+                  );
+                  animationController?.forward();
+                  return HomeListView(
+                    animation: animation,
+                    animationController: animationController,
+                    listData: homeList[index],
+                  );
+                  // return SizedBox();
+                },
+              ),
+            );
+          }
         },
       ),
+    );
+  }
+}
+
+class HomeListView extends StatelessWidget {
+  // 构造函数
+  const HomeListView({
+    Key? key,
+    this.listData,
+    this.animationController,
+    this.animation,
+  }) : super(key: key);
+
+  // 数据
+  final HomeList? listData;
+  final AnimationController? animationController;
+  final Animation<double>? animation;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animationController!,
+      builder: (
+        BuildContext context,
+        Widget? child,
+      ) {
+        return FadeTransition(
+          opacity: animation!,
+          child: Transform(
+            transform:
+                Matrix4.translationValues(0, 50 * (1 - animation!.value), 0),
+            child: AspectRatio(
+              aspectRatio: 1.5,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: <Widget>[
+                    Positioned.fill(
+                      child: Image.asset(
+                        listData!.imagePath,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: Colors.grey.withOpacity(0.2),
+                        onTap: listData!.callback,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

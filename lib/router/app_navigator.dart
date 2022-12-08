@@ -8,6 +8,11 @@ class AppNavigator {
     Get.offAllNamed(AppRoutes.HOME);
   }
 
+  // 去欢迎页
+  static void toIntroductionAnimationScreen() {
+    Get.toNamed(AppRoutes.IntroductionAnimationScreen);
+  }
+
   // 去测试页
   static void toTest() {
     Get.toNamed(AppRoutes.TEST);
