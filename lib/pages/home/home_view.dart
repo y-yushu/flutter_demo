@@ -33,9 +33,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Future<bool> getData() async {
-    await Future<dynamic>.delayed(
-      const Duration(milliseconds: 1000),
-    );
+    await Future<dynamic>.delayed(const Duration());
     return true;
   }
 
@@ -73,8 +71,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   // AppBar
   Widget appBar(bool isLightMode) {
+    // appbar高度
+    double height = AppBar().preferredSize.height;
     return SizedBox(
-      height: AppBar().preferredSize.height,
+      height: height,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -84,8 +84,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               left: 8,
             ),
             child: SizedBox(
-              width: AppBar().preferredSize.height - 8,
-              height: AppBar().preferredSize.height - 8,
+              width: height - 8,
+              height: height - 8,
             ),
           ),
           Expanded(
@@ -111,14 +111,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               left: 8,
             ),
             child: Container(
-              width: AppBar().preferredSize.height - 8,
-              height: AppBar().preferredSize.height - 8,
+              width: height - 8,
+              height: height - 8,
               color: isLightMode ? Colors.white : AppTheme.nearlyBlack,
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius:
-                      BorderRadius.circular(AppBar().preferredSize.height),
+                  borderRadius: BorderRadius.circular(height),
                   onTap: () {
                     setState(() => multiple = !multiple);
                   },
@@ -163,13 +162,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 (int index) {
                   final int count = homeList.length;
                   final Animation<double> animation = Tween<double>(
-                    begin: 0.0,
-                    end: 1.0,
+                    begin: 0,
+                    end: 1,
                   ).animate(
                     CurvedAnimation(
                       parent: animationController!,
                       curve: Interval(
-                        (1 / count) * index,
+                        (index / count),
                         1,
                         curve: Curves.fastOutSlowIn,
                       ),
